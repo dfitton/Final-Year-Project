@@ -1,0 +1,245 @@
+﻿@using System.Globalization
+
+@{
+    ViewData["Title"] = "Personal Stats";
+
+    if (User.Identity.Name != null)
+    {
+        //Global Stats
+        int purchaseCount = 0;
+        double totalSpend = 0;
+        double avgSpend = 0;
+
+        int preorderCount = 0;
+        double preorderPerc = 0;
+        double avgSaving = 0;
+
+        int pcCount = 0;
+        int ps4Count = 0;
+        int xboxCount = 0;
+        int switchCount = 0;
+        int mobileCount = 0;
+        int otherCount = 0;
+
+        double pcSpend = 0;
+        double ps4Spend = 0;
+        double xboxSpend = 0;
+        double switchSpend = 0;
+        double mobileSpend = 0;
+        double otherSpend = 0;
+
+        double pcAvg = 0;
+        double ps4Avg = 0;
+        double xboxAvg = 0;
+        double switchAvg = 0;
+        double mobileAvg = 0;
+        double otherAvg = 0;
+
+        double totalSaving = 0;
+        int savingCount = 0;
+
+        foreach (Purchase p in ViewBag.Purchases)
+        {
+            if (p.PurchaseUser == User.Identity.Name)
+            {
+                purchaseCount++;
+                totalSpend += p.PurchaseCost;
+                if (p.PurchaseCost > 0)
+                {
+                    avgSpend += p.PurchaseCost;
+                }
+                foreach (Game g in ViewBag.Games)
+                {
+                    if (g.GameID == p.PurchaseGame)
+                    {
+                        switch (g.GamePlatform)
+                        {
+                            case Game.EnumPlatform.PC:
+                                pcCount++;
+                                pcSpend += p.PurchaseCost;
+                                break;
+                            case Game.EnumPlatform.PS4:
+                                ps4Count++;
+                                ps4Spend += p.PurchaseCost;
+                                break;
+                            case Game.EnumPlatform.XboxOne:
+                                xboxCount++;
+                                xboxSpend += p.PurchaseCost;
+                                break;
+                            case Game.EnumPlatform.Switch:
+                                switchCount++;
+                                switchSpend += p.PurchaseCost;
+                                break;
+                            case Game.EnumPlatform.Mobile:
+                                mobileCount++;
+                                mobileSpend += p.PurchaseCost;
+                                break;
+                            case Game.EnumPlatform.Other:
+                                otherCount++;
+                                otherSpend += p.PurchaseCost;
+                                break;
+                            default:
+                                break;
+                        }
+                        int i = DateTime.Compare(g.GameRelease, p.PurchaseDate);
+                        if (i > 0)
+                        {
+                            preorderCount++;
+                        }
+                        if (g.GameRRP > p.PurchaseCost)
+                        {
+                            savingCount++;
+                            totalSaving += (g.GameRRP - p.PurchaseCost);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        avgSpend = avgSpend / purchaseCount;
+
+        if (pcCount > 0)
+        {
+            pcAvg = pcSpend / (double)pcCount;
+        }
+        if (ps4Count > 0)
+        {
+            ps4Avg = ps4Spend / (double)ps4Count;
+        }
+        if (xboxCount > 0)
+        {
+            xboxAvg = xboxSpend / (double)xboxCount;
+        }
+        if (switchCount > 0)
+        {
+            switchAvg = switchSpend / (double)switchCount;
+        }
+        if (mobileCount > 0)
+        {
+            mobileAvg = mobileSpend / (double)mobileCount;
+        }
+        if (otherCount > 0)
+        {
+            otherAvg = otherSpend / (double)otherCount;
+        }
+
+        if (preorderCount > 0)
+        {
+            preorderPerc = ((double)preorderCount / (double)purchaseCount) * 100;
+        }
+
+       
+
+        <br />
+
+        <style>
+            .pc {
+                color: dimgrey;
+            }
+
+            .ps4 {
+                color: darkslateblue;
+            }
+
+            .xbox {
+                color: darkgreen;
+            }
+
+            .switch {
+                color: darkred;
+            }
+
+            .mobile {
+                color: darkorange;
+            }
+
+            .other {
+                color: dimgray;
+            }
+        </style>
+
+        <div class="col-md-12">
+            <h2 style="text-align: center">Personal Statistics</h2>
+            <hr />
+            <div class="col-md-4">
+                <h2 style="text-align: center">Total Purchases: @purchaseCount<br /></h2>
+            </div>
+            <div class="col-md-4">
+                <h2 style="text-align: center">Total Spend: @totalSpend.ToString("C2", CultureInfo.CurrentCulture)<br /></h2>
+            </div>
+            <div class="col-md-4">
+                <h2 style="text-align: center">Average Spend: @avgSpend.ToString("C2", CultureInfo.CurrentCulture)<br /></h2>
+            </div>
+            <br /><br /> <br /><br />
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><h3>Platform Stats</h3></th>
+                        <th width="130px" style="text-align: center" class="pc"><h4>PC</h4></th>
+                        <th width="130px" style="text-align: center" class="ps4"><h4>PS4</h4></th>
+                        <th width="130px" style="text-align: center" class="xbox"><h4>Xbox One</h4></th>
+                        <th width="130px" style="text-align: center" class="switch"><h4>Switch</h4></th>
+                        <th width="130px" style="text-align: center" class="mobile"><h4>Mobile</h4></th>
+                        <th width="130px" style="text-align: center" class="other"><h4>Other</h4></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th><h4>Purchases</h4></th>
+                        <td style="text-align: center" class="pc">@pcCount</td>
+                        <td style="text-align: center" class="ps4">@ps4Count</td>
+                        <td style="text-align: center" class="xbox">@xboxCount</td>
+                        <td style="text-align: center" class="switch">@switchCount</td>
+                        <td style="text-align: center" class="mobile">@mobileCount</td>
+                        <td style="text-align: center" class="other">@otherCount</td>
+                    </tr>
+                    <tr>
+                        <th><h4>Total Spend</h4></th>
+                        <td style="text-align: center" class="pc">@pcSpend.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="ps4">@ps4Spend.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="xbox">@xboxSpend.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="switch">@switchSpend.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="mobile">@mobileSpend.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="other">@otherSpend.ToString("C2", CultureInfo.CurrentCulture)</td>
+                    </tr>
+                    <tr>
+                        <th><h4>Average Spend</h4></th>
+                        <td style="text-align: center" class="pc">@pcAvg.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="ps4">@ps4Avg.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="xbox">@xboxAvg.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="switch">@switchAvg.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="mobile">@mobileAvg.ToString("C2", CultureInfo.CurrentCulture)</td>
+                        <td style="text-align: center" class="other">@otherAvg.ToString("C2", CultureInfo.CurrentCulture)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr />
+            <div class="col-md-4">
+                <h3 style="text-align: center">Pre-Orders: @preorderCount<br /></h3>
+            </div>
+            <div class="col-md-4">
+                <h3 style="text-align: center">Pre-Order Rate: @preorderPerc.ToString("N2")%<br /></h3>
+            </div>
+            <div class="col-md-4">
+                <h3 style="text-align: center">Total Saved: @totalSaving.ToString("C2", CultureInfo.CurrentCulture)<br /></h3>
+            </div>
+            <br /><br /> <br />
+            <hr />
+        </div>
+    }
+    else
+    {
+        <div style="text-align: center; height: 80vh">
+            <br /><br /><br /><br />
+            <h2>You need to log in to view this page</h2>
+            <br />
+            <a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-success">Log In</a>&nbsp;
+            <a asp-controller="Account" asp-action="Register" class="btn btn-lg btn-default">Register</a>
+        </div>
+    }
+}
+
+
+

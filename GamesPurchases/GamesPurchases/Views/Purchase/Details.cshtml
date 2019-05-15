@@ -1,0 +1,14 @@
+﻿@model GamesPurchases.Models.Purchase
+
+@{
+    ViewData["Title"] = "Details";
+
+    //This page technically shouldn't be seen
+}
+
+<div style="text-align: center; height: 80vh">
+    <br /><br /><br /><br />
+    <h2>This is an restricted page</h2>
+    <br />
+    <input type="button" class="btn btn-default" value="Return" onclick="location.href='@Url.Action("Index", "Purchase")'" />
+</div>

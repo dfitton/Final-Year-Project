@@ -1,0 +1,193 @@
+﻿@using System.Globalization
+
+@model IEnumerable<GamesPurchases.Models.Game>
+
+@{
+    ViewData["Title"] = "Index";
+
+ bool admin = false;
+
+ if (User.Identity.Name == "admin@email.com")
+ {
+     admin = true;
+ }
+}
+
+@using (Html.BeginForm())
+{
+<div class="col-md-12">
+    <div class="col-md-5">
+        <div style="text-align: left">
+            <h2>Game List</h2>
+            <br />
+        </div>
+    </div>
+    <div class="col-md-2" style="text-align: right">
+        <br />
+        @if (admin) { <a class="btn btn-success" asp-action="Create">Add New</a> }
+    </div>
+    <div class="col-md-4">
+        <br />
+        <input class="form-control" id="SearchString" name="SearchString" type="text" value="">
+    </div>
+    <div class="col-md-1">
+        <br />
+        <input class="btn btn-primary" type="submit" value="Search" />
+    </div>
+</div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width: 450px;">
+                @{
+                    if (ViewBag.Sort == 1)
+                    {
+                        @Html.ActionLink("Game ⯆", "Index", new { s = 2 })
+                    }
+                    else if (ViewBag.Sort == 2)
+                    {
+                        @Html.ActionLink("Game ⯅", "Index", new { s = 1 })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Game", "Index", new { s = 1 })
+                    }
+                }
+            </th>
+            <th style="width: 240px;">
+                @{
+                    if (ViewBag.Sort == 3)
+                    {
+                        @Html.ActionLink("Publisher ⯆", "Index", new { s = 4 })
+                    }
+                    else if (ViewBag.Sort == 4)
+                    {
+                        @Html.ActionLink("Publisher ⯅", "Index", new { s = 3 })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Publisher", "Index", new { s = 3 })
+                    }
+                }
+            </th>
+            <th style="width: 100px; text-align: center">
+                @{
+                    if (ViewBag.Sort == 5)
+                    {
+                        @Html.ActionLink("Platform ⯆", "Index", new { s = 6 })
+                    }
+                    else if (ViewBag.Sort == 6)
+                    {
+                        @Html.ActionLink("Platform ⯅", "Index", new { s = 5 })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Platform", "Index", new { s = 5 })
+                    }
+                }
+            </th>
+            <th style="width: 130px; text-align: center">
+                @{
+                    if (ViewBag.Sort == 7)
+                    {
+                        @Html.ActionLink("Release Date ⯆", "Index", new { s = 8 })
+                    }
+                    else if (ViewBag.Sort == 8)
+                    {
+                        @Html.ActionLink("Release Date ⯅", "Index", new { s = 7 })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Release Date", "Index", new { s = 7 })
+                    }
+                }
+            </th>
+            <th style="width: 80px; text-align: center">
+                @{
+                    if (ViewBag.Sort == 9)
+                    {
+                        @Html.ActionLink("RRP ⯆", "Index", new { s = 10 })
+                    }
+                    else if (ViewBag.Sort == 10)
+                    {
+                        @Html.ActionLink("RRP ⯅", "Index", new { s = 9 })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("RRP", "Index", new { s = 9 })
+                    }
+                }
+            </th>
+            @{
+                if (admin)
+                {
+                    <th></th> }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.GameID">@item.GameTitle</a>
+                </td>
+                <td>
+                    @item.GamePublisher
+                </td>
+                <td style="text-align: center">
+                    @{
+                        switch (item.GamePlatform)
+                        {
+                            case Game.EnumPlatform.PC:
+                                @Html.Raw("PC");
+                                break;
+                            case Game.EnumPlatform.PS4:
+                                @Html.Raw("PS4");
+                                break;
+                            case Game.EnumPlatform.XboxOne:
+                                @Html.Raw("Xbox One");
+                                break;
+                            case Game.EnumPlatform.Switch:
+                                @Html.Raw("Switch");
+                                break;
+                            case Game.EnumPlatform.Mobile:
+                                @Html.Raw("Mobile");
+                                break;
+                            case Game.EnumPlatform.Other:
+                                @Html.Raw("Other");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                </td>
+                <td style="text-align: center">
+                    @item.GameRelease.ToShortDateString()
+                </td>
+                <td style="text-align: center">
+                    @{
+                        if (item.GameRRP == 0)
+                        {
+                            @Html.Raw("Free")
+                        }
+                        else
+                        {
+                            @item.GameRRP.ToString("C2", CultureInfo.CurrentCulture)
+                        }
+                    }
+                </td>
+                @{
+                    if (admin)
+                    {
+                        <td style="text-align: right">
+                            <a class="btn btn-xs btn-default" asp-action="Edit" asp-route-id="@item.GameID">Edit</a>
+                            <a class="btn btn-xs btn-danger" asp-action="Delete" asp-route-id="@item.GameID">Delete</a>
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>

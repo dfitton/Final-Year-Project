@@ -1,0 +1,78 @@
+﻿@model GamesPurchases.Models.Game
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@{
+    if (User.Identity.Name == "admin@email.com")
+    {
+        <h3 style="text-align: center">Editing @Model.GameTitle</h3>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="GameID" />
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <b>Game Title</b>
+                            <input required asp-for="GameTitle" class="form-control" />
+                            <span asp-validation-for="GameTitle" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <b>Publisher</b>
+                            <input required asp-for="GamePublisher" class="form-control" />
+                            <span asp-validation-for="GamePublisher" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <b>Platform</b>
+                            <select asp-for="GamePlatform" class="form-control">
+                                <option value="0">PC</option>
+                                <option value="1">PS4</option>
+                                <option value="2">Xbox One</option>
+                                <option value="3">Switch</option>
+                                <option value="4">Mobile</option>
+                                <option value="5">Other</option>
+                            </select>
+                            <span asp-validation-for="GamePlatform" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <b>Release Date</b>
+                            <input asp-for="GameRelease" class="form-control" />
+                            <span asp-validation-for="GameRelease" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <b>RRP (£)</b>
+                        <input asp-for="GameRRP" class="form-control" />
+                        <span asp-validation-for="GameRRP" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <br />
+                        <div class="form-group" style="text-align: center">
+                            <input type="submit" class="btn btn-success" value="Create" />&nbsp;<input type="button" class="btn btn-default" value="Cancel" onclick="location.href='@Url.Action("Index", "Game")'" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div style="text-align: center; height: 80vh">
+            <br /><br /><br /><br />
+            <h2>This is an Admin only page</h2>
+        </div>
+    }
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

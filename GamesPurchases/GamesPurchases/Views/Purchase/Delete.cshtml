@@ -1,0 +1,41 @@
+﻿@using System.Globalization
+
+@model GamesPurchases.Models.Purchase
+
+@{
+    ViewData["Title"] = "Delete";
+
+    if (User.Identity.Name == "admin@email.com" || User.Identity.Name == Model.PurchaseUser)
+    {
+        <div style="text-align: center">
+            <h2>Are you sure you want to remove this purchase?</h2>
+            @foreach (Game g in ViewBag.Games)
+            {
+                if (g.GameID == Model.PurchaseGame)
+                {
+                    <h3>@g.GameTitle (@g.GamePlatform)</h3>
+                }
+            }
+            <h4>Purchased @Model.PurchaseDate.ToShortDateString()</h4>
+            <h4>Cost: @Model.PurchaseCost.ToString("C2", CultureInfo.CurrentCulture)</h4>
+
+            <br />
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="PurchaseID" />
+                <input type="submit" class="btn btn-danger" value="Delete" />&nbsp;<input type="button" class="btn btn-default" value="Cancel" onclick="location.href='@Url.Action("Index", "Purchase")'" />
+            </form>
+</div>
+    }
+    else
+    {
+        <div style="text-align: center; height: 80vh">
+            <br /><br /><br /><br />
+            <h2>This is an restricted page</h2>
+            <br />
+            <input type="button" class="btn btn-default" value="Return" onclick="location.href='@Url.Action("Index", "Game")'" />
+        </div>
+        
+
+    }
+}

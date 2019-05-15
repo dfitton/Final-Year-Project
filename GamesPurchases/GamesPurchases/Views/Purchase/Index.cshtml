@@ -1,0 +1,391 @@
+﻿@using System.Globalization
+
+@model IEnumerable<GamesPurchases.Models.Purchase>
+
+@{
+    ViewData["Title"] = "Index";
+
+    bool admin = false;
+    bool loggedin = false;
+
+    if (User.Identity.Name == "admin@email.com")
+    {
+        admin = true;
+    }
+    if (User.Identity.Name != null)
+    {
+        loggedin = true;
+    }
+}
+@{
+    if (!loggedin)
+    {
+        <div style="text-align: center; height: 80vh">
+            <br /><br /><br /><br />
+            <h2>You need to log in to view this page</h2>
+            <br />
+            <a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-success">Log In</a>&nbsp;
+            <a asp-controller="Account" asp-action="Register" class="btn btn-lg btn-default">Register</a>
+        </div>
+    }
+    else if (admin)
+    {
+        @using (Html.BeginForm())
+        {
+        <div class="col-md-12">
+            <div class="col-md-5">
+                <div style="text-align: left">
+                    <h2>Purchase List</h2>
+                    <br />
+                </div>
+            </div>
+            <div class="col-md-2" style="text-align: right">
+                <br />
+                <a class="btn btn-success" asp-action="Create">Add New</a>
+            </div>
+            <div class="col-md-4">
+                <br />
+                <input class="form-control" id="SearchString" name="SearchString" type="text" value="">
+            </div>
+            <div class="col-md-1">
+                <br />
+                <input class="btn btn-primary" type="submit" value="Search" />
+            </div>
+        </div>
+        }
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 200px">
+                        @{
+                            if (ViewBag.Sort == 1)
+                            {
+                                @Html.ActionLink("User ⯆", "Index", new { s = 2 })
+                            }
+                            else if (ViewBag.Sort == 2)
+                            {
+                                @Html.ActionLink("User ⯅", "Index", new { s = 1 })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("User", "Index", new { s = 1 })
+                            }
+                        }
+                    </th>
+                    <th style="width: 350px">
+                        @{
+                            if (ViewBag.Sort == 3)
+                            {
+                                @Html.ActionLink("Game ⯆", "Index", new { s = 4 })
+                            }
+                            else if (ViewBag.Sort == 4)
+                            {
+                                @Html.ActionLink("Game ⯅", "Index", new { s = 3 })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Game", "Index", new { s = 3 })
+                            }
+                        }
+                    </th>
+                    <th style="width: 120px; text-align: center">
+                        @{
+                            if (ViewBag.Sort == 9)
+                            {
+                                @Html.ActionLink("Release Date ⯆", "Index", new { s = 10 })
+                            }
+                            else if (ViewBag.Sort == 10)
+                            {
+                                @Html.ActionLink("Release Date ⯅", "Index", new { s = 9 })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Release Date", "Index", new { s = 9 })
+                            }
+                        }
+                    </th>
+                    <th style="width: 120px; text-align: center">
+                        @{
+                            if (ViewBag.Sort == 5)
+                            {
+                                @Html.ActionLink("Purchased ⯆", "Index", new { s = 6 })
+                            }
+                            else if (ViewBag.Sort == 6)
+                            {
+                                @Html.ActionLink("Purchased ⯅", "Index", new { s = 5 })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Purchased", "Index", new { s = 5 })
+                            }
+                        }
+                    </th>
+                    <th style="width: 100px; text-align: center">
+                        @{
+                            if (ViewBag.Sort == 11)
+                            {
+                                @Html.ActionLink("RRP ⯆", "Index", new { s = 12 })
+                            }
+                            else if (ViewBag.Sort == 12)
+                            {
+                                @Html.ActionLink("RRP ⯅", "Index", new { s = 11 })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("RRP", "Index", new { s = 11 })
+                            }
+                        }
+                    </th>
+                    <th style="width: 100px; text-align: center">
+                        @{
+                            if (ViewBag.Sort == 7)
+                            {
+                                @Html.ActionLink("Cost ⯆", "Index", new { s = 8 })
+                            }
+                            else if (ViewBag.Sort == 8)
+                            {
+                                @Html.ActionLink("Cost ⯅", "Index", new { s = 7 })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Cost", "Index", new { s = 7 })
+                            }
+                        }
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @item.PurchaseUser
+                    </td>
+                    <td>
+                        @{
+                            foreach (Game g in ViewBag.Games)
+                            {
+                                if (g.GameID == item.PurchaseGame)
+                                {
+                                    <a asp-action="Details" asp-controller="Game" asp-route-id="@g.GameID">@g.GameTitle (@g.GamePlatform.ToString())</a>
+                                }
+                            }
+                        }
+                    </td>
+                    <td style="text-align: center">
+                        @{
+                            foreach (Game g in ViewBag.Games)
+                            {
+                                if (g.GameID == item.PurchaseGame)
+                                {
+                                    @Html.Raw(g.GameRelease.ToShortDateString())
+                                }
+                            }
+                        }
+                    </td>
+                    <td style="text-align: center">
+                        @item.PurchaseDate.ToShortDateString()
+                    </td>
+                    <td style="text-align: center">
+                        @{
+                            foreach (Game g in ViewBag.Games)
+                            {
+                                if (g.GameID == item.PurchaseGame)
+                                {
+                                    @Html.Raw(g.GameRRP.ToString("C2", CultureInfo.CurrentCulture))
+                                }
+                            }
+                        }
+                    </td>
+                    <td style="text-align: center">
+                        @item.PurchaseCost.ToString("C2", CultureInfo.CurrentCulture)
+                    </td>
+                    <td style="text-align: right">
+                        <a class="btn btn-xs btn-default" asp-action="Edit" asp-route-id="@item.PurchaseID">Edit</a>
+                        <a class="btn btn-xs btn-danger" asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        @using (Html.BeginForm())
+        {
+            <div class="col-md-12">
+                <div class="col-md-5">
+                    <div style="text-align: left">
+                        @{ 
+                            double total = 0;
+                            foreach (var item in Model)
+                            {
+                                if (item.PurchaseUser == User.Identity.Name)
+                                {
+                                    total = +item.PurchaseCost;
+                                }
+                            }
+                        }
+                        <h2>Your Purchases</h2>
+                        <br />
+                    </div>
+                </div>
+                <div class="col-md-2" style="text-align: right">
+                    <br />
+                    <a class="btn btn-success" asp-action="Create">Add New</a>
+                </div>
+                <div class="col-md-4">
+                    <br />
+                    <input class="form-control" id="SearchString" name="SearchString" type="text" value="">
+                </div>
+                <div class="col-md-1">
+                    <br />
+                    <input class="btn btn-primary" type="submit" value="Search" />
+                </div>
+            </div>
+        }
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 800px">
+                            @{
+                                if (ViewBag.Sort == 3)
+                                {
+                                    @Html.ActionLink("Game ⯆", "Index", new { s = 4 })
+                                }
+                                else if (ViewBag.Sort == 4)
+                                {
+                                    @Html.ActionLink("Game ⯅", "Index", new { s = 3 })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Game", "Index", new { s = 3 })
+                                }
+                            }
+                        </th>
+                        <th style="width: 150px; text-align: center">
+                            @{
+                                if (ViewBag.Sort == 9)
+                                {
+                                    @Html.ActionLink("Release Date ⯆", "Index", new { s = 10 })
+                                }
+                                else if (ViewBag.Sort == 10)
+                                {
+                                    @Html.ActionLink("Release Date ⯅", "Index", new { s = 9 })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Release Date", "Index", new { s = 9 })
+                                }
+                            }
+                        </th>
+                        <th style="width: 150px; text-align: center">
+                            @{
+                                if (ViewBag.Sort == 5)
+                                {
+                                    @Html.ActionLink("Purchase Date ⯆", "Index", new { s = 6 })
+                                }
+                                else if (ViewBag.Sort == 6)
+                                {
+                                    @Html.ActionLink("Purchase Date ⯅", "Index", new { s = 5 })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Purchase Date", "Index", new { s = 5 })
+                                }
+                            }
+                        </th>
+                        <th style="width: 100px; text-align: center">
+                            @{
+                                if (ViewBag.Sort == 11)
+                                {
+                                    @Html.ActionLink("RRP ⯆", "Index", new { s = 12 })
+                                }
+                                else if (ViewBag.Sort == 12)
+                                {
+                                    @Html.ActionLink("RRP ⯅", "Index", new { s = 11 })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("RRP", "Index", new { s = 11 })
+                                }
+                            }
+                        </th>
+                        <th style="width: 100px; text-align: center">
+                            @{
+                                if (ViewBag.Sort == 7)
+                                {
+                                    @Html.ActionLink("Cost ⯆", "Index", new { s = 8 })
+                                }
+                                else if (ViewBag.Sort == 8)
+                                {
+                                    @Html.ActionLink("Cost ⯅", "Index", new { s = 7 })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Cost", "Index", new { s = 7 })
+                                }
+                            }
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                            if (item.PurchaseUser == User.Identity.Name)
+                            {
+                    <tr>
+                        <td>
+                            @{
+                                foreach (Game g in ViewBag.Games)
+                                {
+                                    if (g.GameID == item.PurchaseGame)
+                                    {
+                                        <a asp-action="Details" asp-controller="Game" asp-route-id="@g.GameID">@g.GameTitle (@g.GamePlatform.ToString())</a>
+                                    }
+                                }
+                            }
+                        </td>
+                        <td style="text-align: center">
+                            @{
+                                foreach (Game g in ViewBag.Games)
+                                {
+                                    if (g.GameID == item.PurchaseGame)
+                                    {
+                                        @Html.Raw(g.GameRelease.ToShortDateString())
+                                    }
+                                }
+                            }
+                        </td>
+                        <td style="text-align: center">
+                            @item.PurchaseDate.ToShortDateString()
+                        </td>
+                        <td style="text-align: center">
+                            @{
+                                foreach (Game g in ViewBag.Games)
+                                {
+                                    if (g.GameID == item.PurchaseGame)
+                                    {
+                                        @Html.Raw(g.GameRRP.ToString("C2", CultureInfo.CurrentCulture))
+                                    }
+                                }
+                            }
+                        </td>
+                        <td style="text-align: center">
+                            @item.PurchaseCost.ToString("C2", CultureInfo.CurrentCulture)
+                        </td>
+                        <td style="text-align: right">
+                            <a class="btn btn-xs btn-default" asp-action="Edit" asp-route-id="@item.PurchaseID">Edit</a>
+                            <a class="btn btn-xs btn-danger" asp-action="Delete" asp-route-id="@item.PurchaseID">Delete</a>
+                        </td>
+                    </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+    }
+}

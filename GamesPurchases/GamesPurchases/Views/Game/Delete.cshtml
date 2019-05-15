@@ -1,0 +1,54 @@
+﻿@model GamesPurchases.Models.Game
+
+@{
+    ViewData["Title"] = "Delete";
+
+    if (User.Identity.Name != "admin@email.com")
+    {
+        <div style="text-align: center; height: 80vh">
+            <br /><br /><br /><br />
+            <h2>This is an restricted page</h2>
+            <br />
+            <input type="button" class="btn btn-default" value="Return" onclick="location.href='@Url.Action("Index", "Game")'" />
+        </div>
+    }
+    else
+    {
+        bool hasPurchases = false;
+
+        foreach (Purchase p in ViewBag.Purchases)
+        {
+            if (p.PurchaseGame == Model.GameID)
+            {
+                hasPurchases = true;
+            }
+        }
+        if (hasPurchases)
+        {
+            <div style="text-align: center; height: 80vh">
+                <br /><br /><br /><br />
+                <h2>This game has purchases linked to it</h2>
+                <h2>You can only delete a game if it has no linked purchases</h2>
+                <input type="button" class="btn btn-default" value="Return" onclick="location.href='@Url.Action("Index", "Game")'" />
+            </div>
+        }
+        else
+        {
+            <div style="text-align: center">
+                <h2>Are you sure you want to delete this game?</h2>
+                <h3>@Model.GameTitle</h3>
+                <h4>Published by @Model.GamePublisher</h4>
+                <h4>RRP: £@Model.GameRRP</h4>
+
+                <br />
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="GameID" />
+                    <input type="submit" class="btn btn-danger" value="Delete" />&nbsp;<input type="button" class="btn btn-default" value="Cancel" onclick="location.href='@Url.Action("Index", "Game")'" />
+                </form>
+            </div>
+
+        }
+
+    }
+}

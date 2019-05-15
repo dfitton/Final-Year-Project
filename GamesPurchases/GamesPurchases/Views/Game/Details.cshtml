@@ -1,0 +1,67 @@
+﻿@using System.Globalization
+
+@model GamesPurchases.Models.Game
+
+@{
+    ViewData["Title"] = "Details";
+
+    bool admin = false;
+
+    if (User.Identity.Name == "admin@email.com")
+    {
+        admin = true;
+    }
+}
+<div style="text-align: center">
+    <h2>@Model.GameTitle</h2>
+    <h4>Published by @Model.GamePublisher</h4>
+    <h4>RRP: @Model.GameRRP.ToString("C2", CultureInfo.CurrentCulture)</h4>
+    <br />
+
+    @{
+        if (ViewBag.Purchases.Count == 0)
+        {
+            <h4>Nobody has listed this game in their purchases</h4>
+        }
+        else
+        {
+            <table class="table" style="width: 600px" align="center">
+                <thead>
+                    <tr>
+                        <th style="width: 240px; text-align:center">User</th>
+                        <th style="width: 180px; text-align:center">Price Paid</th>
+                        <th style="width: 180px; text-align:center">Date Purchased</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (Purchase p in ViewBag.Purchases)
+                        {
+                            if (p.PurchaseGame == Model.GameID)
+                            {
+                                <tr>
+                                    @if (admin)
+                                    {
+                                        <td>@p.PurchaseUser</td>
+                                    }
+                                    else if (p.PurchaseUser == User.Identity.Name)
+                                    {
+                                        <td>You</td>
+                                    }
+                                    else
+                                    {
+                                        <td>[Anonymous User]</td>
+                                    }
+                                    <td>@p.PurchaseCost.ToString("C2", CultureInfo.CurrentCulture)</td>
+                                    <td>@p.PurchaseDate.ToShortDateString()</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    }
+
+</div>
+

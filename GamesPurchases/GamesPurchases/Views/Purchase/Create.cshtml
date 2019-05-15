@@ -1,0 +1,86 @@
+﻿@model GamesPurchases.Models.Purchase
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@{
+    if (User.Identity.Name != null)
+    {
+        <h3 style="text-align: center">New Purchase</h3>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type=hidden asp-for="PurchaseUser" class="form-control" value="@User.Identity.Name" />
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <b>Game</b>
+                            <select asp-for="PurchaseGame" class="form-control">
+                                @foreach (Game g in ViewBag.Games)
+                                {
+                                    <option value="@g.GameID">@g.GameTitle - @g.GamePlatform</option>
+                                }
+
+                            </select>
+                            <span asp-validation-for="PurchaseGame" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <b>Date of Purchase</b>
+                            <input id="datePicker" asp-for="PurchaseDate" class="form-control" />
+                            <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+                        </div>
+                        <script>
+                            // This code gets the current date and sets the Purchase Date to today
+                            Date.prototype.toDateInputValue = (function () {
+                                var local = new Date(this);
+                                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                                return local.toJSON().slice(0, 10);
+                            });
+                            document.getElementById('datePicker').value = new Date().toDateInputValue();
+                        </script>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <b>Cost of Purchase (£)</b>
+                            <input asp-for="PurchaseCost" class="form-control" />
+                            <span asp-validation-for="PurchaseCost" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Refunded" /> <b>Refunded</b>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <br />
+                        <div class="form-group" style="text-align: center">
+                            <input type="submit" class="btn btn-success" value="Create" />&nbsp;<input type="button" class="btn btn-default" value="Cancel" onclick="location.href='@Url.Action("Index", "Purchase")'" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div style="text-align: center; height: 80vh">
+            <br /><br /><br /><br />
+            <h2>You need to log in to view this page</h2>
+            <br />
+            <a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-success">Log In</a>&nbsp;
+            <a asp-controller="Account" asp-action="Register" class="btn btn-lg btn-default">Register</a>
+        </div>
+    }
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

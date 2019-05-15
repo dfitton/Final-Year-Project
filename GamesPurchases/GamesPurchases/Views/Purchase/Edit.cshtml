@@ -1,0 +1,85 @@
+﻿@model GamesPurchases.Models.Purchase
+
+@{
+    ViewData["Title"] = "Edit";
+
+
+    if (User.Identity.Name == null)
+    {
+        <div style="text-align: center; height: 80vh">
+            <br /><br /><br /><br />
+            <h2>You need to log in to view this page</h2>
+            <br />
+            <a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-success">Log In</a>&nbsp;
+            <a asp-controller="Account" asp-action="Register" class="btn btn-lg btn-default">Register</a>
+        </div>
+    }
+    else if (Model.PurchaseUser == User.Identity.Name || User.Identity.Name == "admin@email.com") //User is an admin or owner of the purchase
+    {
+        <h2 style="text-align: center">Edit Purchase</h2>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="PurchaseID" />
+                    <input type=hidden asp-for="PurchaseUser" class="form-control" value="@User.Identity.Name" />
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <b>Game</b>
+                            <select asp-for="PurchaseGame" class="form-control">
+                                @foreach (Game g in ViewBag.Games)
+                                {
+                                    <option value="@g.GameID">@g.GameTitle - @g.GamePlatform</option>
+                                }
+
+                            </select>
+                            <span asp-validation-for="PurchaseGame" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <b>Date of Purchase</b>
+                            <input id="datePicker" asp-for="PurchaseDate" class="form-control" />
+                            <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <b>Cost of Purchase (£)</b>
+                            <input asp-for="PurchaseCost" class="form-control" />
+                            <span asp-validation-for="PurchaseCost" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Refunded" /> <b>Refunded</b>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <br />
+                        <div class="form-group" style="text-align: center">
+                            <input type="submit" class="btn btn-success" value="Create" />&nbsp;<input type="button" class="btn btn-default" value="Cancel" onclick="location.href='@Url.Action("Index", "Purchase")'" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+    else //Not an admin or owner of the purchase
+    {
+        <div style="text-align: center; height: 80vh">
+            <br /><br /><br /><br />
+            <h2>This is an restricted page</h2>
+        </div>
+    }
+
+}
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
