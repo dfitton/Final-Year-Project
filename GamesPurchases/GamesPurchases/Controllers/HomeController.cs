@@ -22,7 +22,7 @@ namespace GamesPurchases.Controllers
         {
             ViewBag.Games = _context.Game.ToList();
             ViewBag.Purchases = _context.Purchase.ToList();
-            ViewBag.UserCount = _context.Users.Count();
+            ViewBag.UserCount = _context.Users.Count() -1 ;
             return View();
         }
 

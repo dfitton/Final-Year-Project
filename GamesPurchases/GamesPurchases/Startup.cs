@@ -26,8 +26,11 @@ namespace GamesPurchases
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = @"Data Source=socem1.uopnet.plymouth.ac.uk;Initial Catalog=David;Persist Security Info=True;
+                             User ID=David;Password=PRCO304!";
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(connection));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

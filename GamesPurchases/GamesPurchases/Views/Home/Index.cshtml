@@ -1,5 +1,32 @@
 ﻿@using System.Globalization
 
+<style>
+    .pc {
+        color: dimgrey;
+    }
+
+    .ps4 {
+        color: darkslateblue;
+    }
+
+    .xbox {
+        color: darkgreen;
+    }
+
+    .switch {
+        color: darkred;
+    }
+
+    .mobile {
+        color: darkorange;
+    }
+
+    .other {
+        color: darkgray;
+    }
+</style>
+
+
 @{
     ViewData["Title"] = "Home Page";
 
@@ -33,6 +60,19 @@
     double mobileAvg = 0;
     double otherAvg = 0;
 
+    int janCount = 0;
+    int febCount = 0;
+    int marCount = 0;
+    int aprCount = 0;
+    int mayCount = 0;
+    int junCount = 0;
+    int julCount = 0;
+    int augCount = 0;
+    int sepCount = 0;
+    int octCount = 0;
+    int novCount = 0;
+    int decCount = 0;
+
     double totalSaving = 0;
     int savingCount = 0;
 
@@ -40,13 +80,13 @@
     {
         purchaseCount++;
         totalSpend += p.PurchaseCost;
-        if(p.PurchaseCost>0)
+        if (p.PurchaseCost > 0)
         {
             avgSpend += p.PurchaseCost;
         }
-        foreach(Game g in ViewBag.Games)
+        foreach (Game g in ViewBag.Games)
         {
-            if(g.GameID == p.PurchaseGame)
+            if (g.GameID == p.PurchaseGame)
             {
                 switch (g.GamePlatform)
                 {
@@ -78,14 +118,53 @@
                         break;
                 }
                 int i = DateTime.Compare(g.GameRelease, p.PurchaseDate);
-                if(i > 0)
+                if (i > 0)
                 {
                     preorderCount++;
                 }
-                if(g.GameRRP > p.PurchaseCost)
+                if (g.GameRRP > p.PurchaseCost)
                 {
                     savingCount++;
                     totalSaving += (g.GameRRP - p.PurchaseCost);
+                }
+                switch (p.PurchaseDate.Month)
+                {
+                    case 1:
+                        janCount++;
+                        break;
+                    case 2:
+                        febCount++;
+                        break;
+                    case 3:
+                        marCount++;
+                        break;
+                    case 4:
+                        aprCount++;
+                        break;
+                    case 5:
+                        mayCount++;
+                        break;
+                    case 6:
+                        junCount++;
+                        break;
+                    case 7:
+                        julCount++;
+                        break;
+                    case 8:
+                        augCount++;
+                        break;
+                    case 9:
+                        sepCount++;
+                        break;
+                    case 10:
+                        octCount++;
+                        break;
+                    case 11:
+                        novCount++;
+                        break;
+                    case 12:
+                        decCount++;
+                        break;
                 }
             }
         }
@@ -118,34 +197,185 @@
         otherAvg = otherSpend / (double)otherCount;
     }
 
-    if(preorderCount > 0)
+    if (preorderCount > 0)
     {
         preorderPerc = ((double)preorderCount / (double)purchaseCount) * 100;
     }
 
-    
+
 }
 <br />
-<style>
-    .pc {
-        color: dimgrey;
-    }
-    .ps4 {
-        color: darkslateblue;
-    }
-    .xbox {
-        color: darkgreen;
-    }
-    .switch {
-        color: darkred;
-    }
-    .mobile {
-        color: darkorange;
-    }
-    .other {
-        color: dimgray;
-    }
-</style>
+
+<head>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript">
+
+        window.onload = function () {
+            CanvasJS.addColorSet("CustomColors",
+                [//colorSet Array
+
+                    "dimgrey",
+                    "darkslateblue",
+                    "darkgreen",
+                    "darkred",
+                    "darkorange",
+                    "darkgray"
+                ]);
+
+            // Total Purchases Pie chart
+            var chart = new CanvasJS.Chart("piePurchaseTotal", {
+
+                colorSet: "CustomColors",
+
+                title: {
+                    fontFamily: "Arial",
+                    text: "Global Purchase Totals"
+                },
+                data: [
+                    {
+                        
+                        type: "pie",
+                        toolTipContent: "{y} - #percent %",
+                        dataPoints: [
+                            { label: "PC", y: @pcCount },
+                            { label: "PS4", y: @ps4Count },
+                            { label: "Xbox One", y: @xboxCount },
+                            { label: "Switch", y: @switchCount },
+                            { label: "Mobile", y: @mobileCount },
+                            { label: "Other", y: @otherCount}
+                        ]
+                    }
+                ]
+            });
+            chart.render();
+
+            //Total Spent Columm Chart
+            var chart = new CanvasJS.Chart("colSpendTotal", {
+
+                colorSet: "CustomColors",
+
+                title: {
+                    fontFamily: "Arial",
+                    text: "Global Spending Totals"
+                },
+                axisY: {
+                    prefix: "£"
+                },
+                data: [
+                    {
+                        type: "column",
+                        toolTipContent: "{label} - £{y}",
+                        dataPoints: [
+                            { x: 1, y: @pcSpend, label: "PC"},
+                            { x: 2, y: @ps4Spend, label: "PS4"},
+                            { x: 3, y: @xboxSpend, label: "Xbox One"},
+                            { x: 4, y: @switchSpend, label: "Switch"},
+                            { x: 5, y: @mobileSpend, label: "Mobile"},
+                            { x: 6, y: @otherSpend, label: "Other"}
+                        ]
+                    }
+                ]
+            });
+            chart.render();
+
+            //Average spend column chart
+            var chart = new CanvasJS.Chart("colAvgTotal", {
+
+                colorSet: "CustomColors",
+
+                title: {
+                    fontFamily: "Arial",
+                    text: "Global Average Totals"
+                },
+                axisY: {
+                    prefix: "£",
+                },
+                axisX: {
+                    ValueFormatString: "#,###,.##",
+                },
+                data: [
+                    {                      
+                        type: "column",
+                        toolTipContent: "{label} - £{y}",
+                        dataPoints: [
+                            { x: 1, y: @pcAvg, label: "PC"},
+                            { x: 2, y: @ps4Avg, label: "PS4"},
+                            { x: 3, y: @xboxAvg, label: "Xbox One"},
+                            { x: 4, y: @switchAvg, label: "Switch"},
+                            { x: 5, y: @mobileAvg, label: "Mobile"},
+                            { x: 6, y: @otherAvg, label: "Other"}
+                        ]
+                    }
+                ]
+            });
+            chart.render();
+
+            //Purchase per month Count chart
+            var chart = new CanvasJS.Chart("areaMonthCount", {
+    
+                title: {
+                    fontFamily: "Arial",
+                    text: "Purchases made per month"
+                },     
+                axisX: {
+                    valueFormatString: "MMM",
+                    interval: 1,
+                    IntervalType: "month"
+                },
+                data: [
+                    {                      
+                        type: "area",
+                        toolTipContent: "{y}",
+                        dataPoints: [
+                            { x: new Date(2019, 00, 00), y: @janCount},
+                            { x: new Date(2019, 01, 00), y: @febCount},
+                            { x: new Date(2019, 02, 00), y: @marCount},
+                            { x: new Date(2019, 03, 00), y: @aprCount},
+                            { x: new Date(2019, 04, 00), y: @mayCount},
+                            { x: new Date(2019, 05, 00), y: @junCount},
+                            { x: new Date(2019, 06, 00), y: @julCount},
+                            { x: new Date(2019, 07, 00), y: @augCount},
+                            { x: new Date(2019, 08, 00), y: @sepCount},
+                            { x: new Date(2019, 09, 00), y: @octCount},
+                            { x: new Date(2019, 10, 00), y: @novCount},
+                            { x: new Date(2019, 11, 00), y: @decCount},
+                        ]
+                    }
+                ]
+            });
+            chart.render();
+
+        }
+
+
+        function chartPick() {
+            //set all charts visibility to none
+            document.getElementById('piePurchaseDD').style.display = "none";
+            document.getElementById('colSpendDD').style.display = "none";
+            document.getElementById('colAvgDD').style.display = "none";
+            document.getElementById('areaMonthDD').style.display = "none";
+
+            //changing the charts visibility based on which is selected
+            if (document.getElementById('chartSelect').value == 'chartPurchasePie') {
+                document.getElementById('piePurchaseDD').style.display = "block";
+            }
+            else if (document.getElementById('chartSelect').value == "chartSpendCol") {
+                document.getElementById('colSpendDD').style.display = "block";
+                document.getElementById('colSpendDD').style.visibility = "visible";
+            }
+            else if (document.getElementById('chartSelect').value == "chartAvgCol") {
+                document.getElementById('colAvgDD').style.display = "block";
+                document.getElementById('colAvgDD').style.visibility = "visible";
+            }
+            else if (document.getElementById('chartSelect').value == "chartMonthAr") {
+                document.getElementById('areaMonthDD').style.display = "block";
+                document.getElementById('areaMonthDD').style.visibility = "visible";
+            }
+        }
+    </script>
+</head>
+
+
 <div class="col-md-12">
     <h2 style="text-align: center">Global Statistics for @ViewBag.UserCount Users</h2>
     <hr />
@@ -212,6 +442,39 @@
     <div class="col-md-4">
         <h3 style="text-align: center">Total Saved: @totalSaving.ToString("C2", CultureInfo.CurrentCulture)<br /></h3>
     </div>
+    <br />
+
     <br /><br /> <br />
     <hr />
 </div>
+
+
+
+<div class="col-md-12">
+    <h4>
+        Slect a chart to view:
+        <select id="chartSelect" onchange="chartPick()">
+            <option value="chartPurchasePie">Total Number of Purchases Pie Chart</option>
+            <option value="chartSpendCol">Total Money Spent Column Chart</option>
+            <option value="chartAvgCol">Total Average Money Spent Column Chart</option>
+            <option value="chartMonthAr">Total Games Purchased Per Month Area Chart</option>
+        </select>
+    </h4>
+    <br />
+    <br />
+</div>
+
+<div class="col-md-12" id="piePurchaseDD" style="display: block">
+     <div id="piePurchaseTotal" style="height: 500px; width: 100%; align-content: center; position: absolute";></div>
+</div>
+<div class="col-md-12" id="colSpendDD" style="display: block; visibility: hidden">
+    <div id="colSpendTotal" style="height: 500px; width: 70%; align-content: center; position: absolute; padding-left: 160px";></div>
+</div>
+<div class="col-md-12" id="colAvgDD" style="display: block; visibility: hidden">
+    <div id="colAvgTotal" style="height: 500px; width: 70%; align-content: center; position: absolute; padding-left: 160px" ;></div>
+</div>
+<div class="col-md-12" id="areaMonthDD" style="display: block; visibility: hidden">
+    <div id="areaMonthCount" style="height: 500px; width: 100%; align-content: center; position: absolute" ;></div>
+</div>
+
+<br />

@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Configuration;
+using System.Data.SqlClient;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using GamesPurchases.Models;
+using Microsoft.IdentityModel.Protocols;
 
 namespace GamesPurchases.Data
 {
+    public static class ConfigurationManager
+    {
+
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -27,4 +37,6 @@ namespace GamesPurchases.Data
 
         public DbSet<GamesPurchases.Models.Game> Game { get; set; }
     }
+
+    
 }
