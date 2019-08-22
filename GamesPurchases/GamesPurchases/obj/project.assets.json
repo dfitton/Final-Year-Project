@@ -13432,11 +13432,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\potat\\Desktop\\GamesPurchases - Copy\\GamesPurchases\\GamesPurchases.csproj",
+      "projectUniqueName": "C:\\Users\\potat\\OneDrive\\Documents\\GitHub\\Final-Year-Project\\GamesPurchases\\GamesPurchases\\GamesPurchases.csproj",
       "projectName": "GamesPurchases",
-      "projectPath": "C:\\Users\\potat\\Desktop\\GamesPurchases - Copy\\GamesPurchases\\GamesPurchases.csproj",
+      "projectPath": "C:\\Users\\potat\\OneDrive\\Documents\\GitHub\\Final-Year-Project\\GamesPurchases\\GamesPurchases\\GamesPurchases.csproj",
       "packagesPath": "C:\\Users\\potat\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\potat\\Desktop\\GamesPurchases - Copy\\GamesPurchases\\obj\\",
+      "outputPath": "C:\\Users\\potat\\OneDrive\\Documents\\GitHub\\Final-Year-Project\\GamesPurchases\\GamesPurchases\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -34,3 +34,15 @@ C:\Users\potat\Desktop\GamesPurchases - Copy\GamesPurchases\obj\Debug\netcoreapp
 C:\Users\potat\Desktop\GamesPurchases - Copy\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.AssemblyInfo.cs
 C:\Users\potat\Desktop\GamesPurchases - Copy\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.dll
 C:\Users\potat\Desktop\GamesPurchases - Copy\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.pdb
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\bin\Debug\netcoreapp2.0\GamesPurchases.deps.json
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\bin\Debug\netcoreapp2.0\GamesPurchases.runtimeconfig.json
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\bin\Debug\netcoreapp2.0\GamesPurchases.runtimeconfig.dev.json
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\bin\Debug\netcoreapp2.0\GamesPurchases.dll
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\bin\Debug\netcoreapp2.0\GamesPurchases.pdb
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.csprojAssemblyReference.cache
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.csproj.CoreCompileInputs.cache
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.AssemblyInfoInputs.cache
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.AssemblyInfo.cs
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.dll
+C:\Users\potat\OneDrive\Documents\GitHub\Final-Year-Project\GamesPurchases\GamesPurchases\obj\Debug\netcoreapp2.0\GamesPurchases.pdb

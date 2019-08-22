@@ -320,7 +320,9 @@
                 axisX: {
                     valueFormatString: "MMM",
                     interval: 1,
-                    IntervalType: "month"
+                    IntervalType: "month",
+                    minimum: new Date(2019, 00, 00),
+                    maximum: new Date(2019, 11, 31)
                 },
                 data: [
                     {                      
@@ -338,7 +340,7 @@
                             { x: new Date(2019, 08, 00), y: @sepCount},
                             { x: new Date(2019, 09, 00), y: @octCount},
                             { x: new Date(2019, 10, 00), y: @novCount},
-                            { x: new Date(2019, 11, 00), y: @decCount},
+                            { x: new Date(2019, 11, 00), y: @decCount}
                         ]
                     }
                 ]
